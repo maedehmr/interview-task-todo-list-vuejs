@@ -2,7 +2,7 @@
 import type { Todo } from '@/types/todo'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getTodos } from '@/services/todoService'
+import { deleteTodo, getTodos } from '@/services/todoService'
 
 const router = useRouter()
 const tableData = ref<Todo[]>([])
@@ -20,7 +20,7 @@ const handleEdit = (index: number, row: Todo) => {
 }
 
 const handleDelete = (index: number, row: Todo) => {
-  console.log(index, row)
+  tableData.value = deleteTodo(row.id)
 }
 </script>
 

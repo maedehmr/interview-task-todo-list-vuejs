@@ -1,4 +1,4 @@
-import type { Todo } from "@/types/todo"
+import type { Todo } from '@/types/todo'
 
 const STORAGE_KEY = 'todos'
 
@@ -16,7 +16,7 @@ export const createTodo = (description: string): Todo => {
   const newTodo: Todo = {
     id: Date.now(),
     description,
-    status: false, 
+    status: false,
   }
   const updatedTodos = [...todos, newTodo]
   saveTodos(updatedTodos)
@@ -25,21 +25,23 @@ export const createTodo = (description: string): Todo => {
 
 export const updateTodo = (id: number, updatedFields: Partial<Omit<Todo, 'id'>>): Todo | null => {
   const todos = getTodos()
-  const index = todos.findIndex(todo => todo.id === id)
+  const index = todos.findIndex((todo) => todo.id === id)
   if (index === -1) return null
   todos[index] = { ...todos[index], ...updatedFields }
   saveTodos(todos)
   return todos[index]
 }
 
-export const deleteTodo = (id: number) => {
-  const todos = getTodos().filter(todo => todo.id !== id)
-  saveTodos(todos)
+export const deleteTodo = (id: number): Todo[] => {
+  const todos = getTodos()
+  const updatedTodos = todos.filter((todo) => todo.id !== id)
+  saveTodos(updatedTodos)
+  return updatedTodos
 }
 
 export const toggleStatus = (id: number): Todo | null => {
   const todos = getTodos()
-  const index = todos.findIndex(todo => todo.id === id)
+  const index = todos.findIndex((todo) => todo.id === id)
   if (index === -1) return null
   todos[index].status = !todos[index].status
   saveTodos(todos)

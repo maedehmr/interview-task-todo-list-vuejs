@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import TodoTable from '../components/TodoTable.vue'
-import CreateTodo from '../components/CreateButton.vue'
+import CreateButton from '../components/CreateButton.vue'
 </script>
 
 <template>
   <main>
-    <CreateTodo />
+    <CreateButton />
     <TodoTable />
   </main>
 </template>

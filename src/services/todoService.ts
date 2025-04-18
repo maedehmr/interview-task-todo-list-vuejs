@@ -23,13 +23,18 @@ export const createTodo = (description: string): Todo => {
   return newTodo
 }
 
-export const updateTodo = (id: number, updatedFields: Partial<Omit<Todo, 'id'>>): Todo | null => {
+export const updateTodo = (id: number, description: string): Todo | null => {
   const todos = getTodos()
   const index = todos.findIndex((todo) => todo.id === id)
   if (index === -1) return null
-  todos[index] = { ...todos[index], ...updatedFields }
+  todos[index].description = description
   saveTodos(todos)
   return todos[index]
+}
+
+export const getTodoById = (id: number): Todo | null => {
+  const todos = getTodos()
+  return todos.find((todo) => todo.id === id) || null
 }
 
 export const deleteTodo = (id: number): Todo[] => {
@@ -39,11 +44,12 @@ export const deleteTodo = (id: number): Todo[] => {
   return updatedTodos
 }
 
-export const toggleStatus = (id: number): Todo | null => {
+export const toggleStatus = (id: number): Todo[] => {
   const todos = getTodos()
   const index = todos.findIndex((todo) => todo.id === id)
-  if (index === -1) return null
-  todos[index].status = !todos[index].status
-  saveTodos(todos)
-  return todos[index]
+  if (index !== -1) {
+    todos[index].status = !todos[index].status
+    saveTodos(todos)
+  }
+  return todos
 }

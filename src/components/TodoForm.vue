@@ -8,13 +8,13 @@ const router = useRouter()
 const route = useRoute()
 
 const textarea = ref('')
-const isEditMode = ref(false)
+const isEdit = ref(false)
 const todoId = ref<number | null>(null)
 
 onMounted(() => {
   const idParam = route.params.id
   if (idParam) {
-    isEditMode.value = true
+    isEdit.value = true
     todoId.value = Number(idParam)
 
     const existingTodo = getTodoById(todoId.value)
@@ -35,7 +35,7 @@ const handleSubmit = () => {
     return
   }
 
-  if (isEditMode.value && todoId.value !== null) {
+  if (isEdit.value && todoId.value !== null) {
     const updated = updateTodo(todoId.value, trimmed)
     if (updated) {
       ElMessage.success('Task updated!')
@@ -54,21 +54,17 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <h2>{{ isEditMode ? 'Edit' : 'Create' }} Todo</h2>
-  <div class="description-wrapper">
+  <h2>{{ isEdit ? 'Edit' : 'Create' }} Todo</h2>
+  <div class="mt-1">
     <el-input v-model="textarea" :rows="2" type="textarea" placeholder="task description" />
   </div>
-  <el-button class="submit-btn" type="primary" @click="handleSubmit">
-    {{ isEditMode ? 'Update' : 'Create' }}
+  <el-button class="mt-1" type="primary" @click="handleSubmit">
+    {{ isEdit ? 'Update' : 'Create' }}
   </el-button>
 </template>
 
 <style scoped>
-.description-wrapper {
-  margin-top: 1rem;
-}
-
-.submit-btn {
+.mt-1 {
   margin-top: 1rem;
 }
 </style>

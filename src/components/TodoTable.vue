@@ -2,7 +2,7 @@
 import type { Todo } from '@/types/todo'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { deleteTodo, getTodos, toggleStatus } from '@/services/todoService'
+import { deleteTodo, getTodos, saveTodos, toggleStatus } from '@/services/todoService'
 
 const router = useRouter()
 const tableData = ref<Todo[]>([])
@@ -22,12 +22,27 @@ const handleEdit = (row: Todo) => {
 const handleDelete = (row: Todo) => {
   tableData.value = deleteTodo(row.id)
 }
+
+const filterTag = (value: boolean, row: Todo) => {
+  return row.status === value
+}
+
+const clearCompleted = () => {
+  const activeTodos = tableData.value.filter((todo: Todo) => !todo.status)
+  saveTodos(activeTodos)
+  tableData.value = activeTodos
+}
 </script>
 
 <template>
-  <el-table :data="tableData" stripe class="table">
+  <el-table
+    :default-sort="{ prop: 'description', order: 'descending' }"
+    :data="tableData"
+    stripe
+    class="table mt-1"
+  >
     <el-table-column type="index" width="50" />
-    <el-table-column label="Description" prop="description" min-width="200" />
+    <el-table-column sortable label="Description" prop="description" min-width="200" />
     <el-table-column label="Status" min-width="130">
       <template #default="scope">
         <el-tag :type="scope.row.status ? 'success' : 'warning'" disable-transitions>
@@ -35,7 +50,17 @@ const handleDelete = (row: Todo) => {
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column align="right" fixed="right" min-width="90">
+    <el-table-column
+      align="right"
+      fixed="right"
+      min-width="90"
+      :filters="[
+        { text: 'Completed', value: true },
+        { text: 'Not Completed', value: false },
+      ]"
+      :filter-method="filterTag"
+      filter-placement="bottom-end"
+    >
       <template #default="scope">
         <el-button
           size="small"
@@ -54,11 +79,15 @@ const handleDelete = (row: Todo) => {
       </template>
     </el-table-column>
   </el-table>
+  <el-button class="mt-1" @click="clearCompleted">clear all completed</el-button>
 </template>
 
 <style scoped>
 .table {
   width: 100%;
+}
+
+.mt-1 {
   margin-top: 1rem;
 }
 </style>

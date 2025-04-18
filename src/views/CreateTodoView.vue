@@ -3,5 +3,7 @@ import TodoForm from '@/components/TodoForm.vue'
 </script>
 
 <template>
-  <TodoForm />
+  <main>
+    <TodoForm />
+  </main>
 </template>

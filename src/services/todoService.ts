@@ -46,10 +46,8 @@ export const deleteTodo = (id: number): Todo[] => {
 
 export const toggleStatus = (id: number): Todo[] => {
   const todos = getTodos()
-  const index = todos.findIndex((todo) => todo.id === id)
-  if (index !== -1) {
-    todos[index].status = !todos[index].status
-    saveTodos(todos)
-  }
+  const todo = todos.find((t) => t.id === id)
+  if (todo) todo.status = !todo.status
+  saveTodos(todos)
   return todos
 }

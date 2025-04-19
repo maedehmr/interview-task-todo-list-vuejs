@@ -53,7 +53,7 @@ const clearCompleted = () => {
     <el-table-column
       align="right"
       fixed="right"
-      min-width="90"
+      min-width="100"
       :filters="[
         { text: 'Completed', value: true },
         { text: 'Not Completed', value: false },
@@ -62,20 +62,22 @@ const clearCompleted = () => {
       filter-placement="bottom-end"
     >
       <template #default="scope">
-        <el-button
-          size="small"
-          :type="!scope.row.status ? 'success' : 'warning'"
-          plain
-          @click="handleStatus(scope.row)"
-        >
-          {{ !scope.row.status ? 'Done' : 'Undone' }}
-        </el-button>
-        <el-button size="small" type="primary" plain @click="handleEdit(scope.row)">
-          Edit
-        </el-button>
-        <el-button size="small" type="danger" plain @click="handleDelete(scope.row)">
-          Delete
-        </el-button>
+        <div class="buttons">
+          <el-button
+            size="small"
+            :type="!scope.row.status ? 'success' : 'warning'"
+            plain
+            @click="handleStatus(scope.row)"
+          >
+            {{ !scope.row.status ? 'Done' : 'Undone' }}
+          </el-button>
+          <el-button size="small" type="primary" plain @click="handleEdit(scope.row)">
+            Edit
+          </el-button>
+          <el-button size="small" type="danger" plain @click="handleDelete(scope.row)">
+            Delete
+          </el-button>
+        </div>
       </template>
     </el-table-column>
   </el-table>
@@ -89,5 +91,19 @@ const clearCompleted = () => {
 
 .mt-1 {
   margin-top: 1rem;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.3rem;
+}
+button {
+  min-width: 100%;
+
+  @media (min-width: 768px) {
+    min-width: fit-content;
+  }
 }
 </style>
